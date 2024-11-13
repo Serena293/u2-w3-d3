@@ -1,6 +1,6 @@
 const container = document.getElementById("container");
 const rowContainer = document.getElementById("row-container");
-
+const cart = [];
 const getBooks = () => {
   const booksURL = "https://striveschool-api.herokuapp.com/books";
   fetch(booksURL)
@@ -26,7 +26,7 @@ const getBooks = () => {
       <p class="card-text">ID: ${book.asin}</p>
       <div class="d-flex justify-content-around">
     <a href="#" class="btn btn-primary delete-btn">Scarta</a>
-     <a href="#" class="btn btn-primary">Aggiungi al carrello</a>
+     <a href="#" class="btn btn-primary add-btn" data-id=${book.asin}>Aggiungi al carrello</a>
      </div>
   </div>
 </div>`;
@@ -34,11 +34,21 @@ const getBooks = () => {
 
         const deleteBtn = newSlot.querySelector(".delete-btn");
         deleteBtn.addEventListener("click", (e) => {
-            e.preventDefault()
-          newSlot.remove()
+          e.preventDefault();
+          newSlot.remove();
         });
+
+        const addBtn = newSlot.querySelector(".add-btn");
+   addBtn.addEventListener('click',(e)=>{
+        e.preventDefault()
+       console.log(addBtn.dataset)
+        cart.push(newSlot.title)
+        console.log(cart)
+    })
       });
     })
+ 
+
     .catch((errore) => {
       console.log("errore");
     });
