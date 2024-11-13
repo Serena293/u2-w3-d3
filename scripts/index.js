@@ -5,7 +5,7 @@ const getBooks = () => {
   const booksURL = "https://striveschool-api.herokuapp.com/books";
   fetch(booksURL)
     .then((response) => {
-      console.log("Oggetto", response);
+      //   console.log("Oggetto", response);
       if (response.ok) {
         return response.json();
       } else {
@@ -13,7 +13,7 @@ const getBooks = () => {
       }
     })
     .then((books) => {
-      console.log("secondo then");
+      //   console.log("secondo then");
       books.forEach((book) => {
         const newSlot = document.createElement("div");
         newSlot.classList.add("col", "col-12", "col-md-6", "col-lg-3");
@@ -38,16 +38,28 @@ const getBooks = () => {
           newSlot.remove();
         });
 
+        // const addToCart = () => {}
+
         const addBtn = newSlot.querySelector(".add-btn");
-   addBtn.addEventListener('click',(e)=>{
-        e.preventDefault()
-       console.log(addBtn.dataset)
-        cart.push(newSlot.title)
-        console.log(cart)
-    })
+        addBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          const product = {
+            title: book.title,
+            id: addBtn.dataset.id,
+            quantity: 1,
+          };
+
+          const existingProduct = cart.find((item) => item.id === product.id);
+
+          if (existingProduct) {
+            existingProduct.quantity += 1;
+          } else {
+            cart.push(product);
+          }
+          console.log(cart);
+        });
       });
     })
- 
 
     .catch((errore) => {
       console.log("errore");
