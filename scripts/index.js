@@ -1,6 +1,19 @@
 const container = document.getElementById("container");
 const rowContainer = document.getElementById("row-container");
 const cart = [];
+
+const saveCartToLocalStorage = () => {
+  localStorage.setItem("cart", JSON.stringify(cart));
+};
+
+const loadCartFromLocalStorage = () => {
+  const savedCart = localStorage.getItem("cart");
+  if (savedCart) {
+    cart.push(...JSON.parse(savedCart));
+  }
+};
+
+loadCartFromLocalStorage();
 const getBooks = () => {
   const booksURL = "https://striveschool-api.herokuapp.com/books";
   fetch(booksURL)
@@ -56,7 +69,7 @@ const getBooks = () => {
           } else {
             cart.push(product);
           }
-          localStorage.setItem("cart", JSON.stringify(cart));
+          saveCartToLocalStorage(); //salva 
           console.log(cart);
         });
       });
@@ -67,6 +80,4 @@ const getBooks = () => {
     });
 };
 
-
-  
 getBooks();
