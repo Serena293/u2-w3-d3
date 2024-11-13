@@ -56,6 +56,7 @@ const getBooks = () => {
           } else {
             cart.push(product);
           }
+          localStorage.setItem("cart", JSON.stringify(cart));
           console.log(cart);
         });
       });
@@ -66,4 +67,6 @@ const getBooks = () => {
     });
 };
 
+
+  
 getBooks();
