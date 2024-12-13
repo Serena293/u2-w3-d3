@@ -1,15 +1,38 @@
 const container = document.getElementById("container");
 const rowContainer = document.getElementById("row-container");
-const cart = [];
+const cartContainer  = document.getElementById('cart-container')
+let cart = [];
 
 const saveCartToLocalStorage = () => {
   localStorage.setItem("cart", JSON.stringify(cart));
 };
 
+
+const removeFromLocalStorage = (asin) => {
+  cart = cart.filter((item)=> item.id !== asin)
+  saveCartToLocalStorage()
+  loadCartFromLocalStorage()
+// JSON.parse(localStorage.removeItem('cart'))
+}
+
+
 const loadCartFromLocalStorage = () => {
+  cartContainer.innerHTML =''
   const savedCart = localStorage.getItem("cart");
   if (savedCart) {
-    cart.push(...JSON.parse(savedCart));
+    cart = JSON.parse(savedCart)
+
+    cart.forEach((item)=>{
+      const itemSaved = document.createElement('div')
+      itemSaved.innerHTML = `${item.title} <button class='remove-btn-cart' id="${item.asin}">Remove</button>`
+      cartContainer.appendChild(itemSaved)
+      
+      const removeBtnCart = itemSaved.querySelector('.remove-btn-cart')
+      removeBtnCart.addEventListener('click', ()=>{
+        removeFromLocalStorage(item.id)
+      })
+
+    })
   }
 };
 
